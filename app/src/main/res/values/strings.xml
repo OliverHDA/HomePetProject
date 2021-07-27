@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">HomePetProject</string>
+    <string name="counter_one">Counter one</string>
+    <string name="counter_two">Counter two</string>
+    <string name="counter_three">Counter three</string>
+    <string name="zero">0</string>
 </resources>
