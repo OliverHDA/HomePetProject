@@ -2,36 +2,40 @@ package ru.oliverhd.homepetproject.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import ru.oliverhd.homepetproject.R
 import ru.oliverhd.homepetproject.databinding.ActivityMainBinding
 import ru.oliverhd.homepetproject.presenter.MainPresenter
 
 class MainActivity : AppCompatActivity(), MainView {
 
-    private var vb: ActivityMainBinding? = null
-    val presenter = MainPresenter(this)
+    private var _binding: ActivityMainBinding? = null
+    private val binding get() = _binding!!
+    private val presenter = MainPresenter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        vb = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(vb?.root)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val listener = View.OnClickListener {
-            presenter.counterClick(it.id)
+        binding.btnCounter1.setOnClickListener {
+            presenter.counterOneClick()
         }
-
-        vb?.btnCounter1?.setOnClickListener(listener)
-        vb?.btnCounter2?.setOnClickListener(listener)
-        vb?.btnCounter3?.setOnClickListener(listener)
+        binding.btnCounter2.setOnClickListener {
+            presenter.counterTwoClick()
+        }
+        binding.btnCounter3.setOnClickListener {
+            presenter.counterThreeClick()
+        }
     }
 
-    //Подсказка к ПЗ: поделить на 3 отдельные функции и избавиться от index
-    override fun setButtonText(index: Int, text: String) {
-        when(index){
-            0 -> vb?.btnCounter1?.text = text
-            1 -> vb?.btnCounter2?.text = text
-            2 -> vb?.btnCounter3?.text = text
-        }
+    override fun setButtonOneText(text: String) {
+        binding.btnCounter1.text = text
+    }
+
+    override fun setButtonTwoText(text: String) {
+        binding.btnCounter2.text = text
+    }
+
+    override fun setButtonThreeText(text: String) {
+        binding.btnCounter3.text = text
     }
 }

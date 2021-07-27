@@ -1,9 +1,9 @@
 package ru.oliverhd.homepetproject.model
 
 class CountersModel {
-    val counters = mutableListOf(0, 0, 0)
+    private val counters = mutableListOf(0, 0, 0)
 
-    fun getCurrent(index: Int): Int {
+    private fun getCurrent(index: Int): Int {
         return counters[index]
     }
 
@@ -12,8 +12,7 @@ class CountersModel {
         return getCurrent(index)
     }
 
-    fun set(index: Int, value: Int){
+    fun set(index: Int, value: Int) {
         counters[index] = value
     }
-
 }
