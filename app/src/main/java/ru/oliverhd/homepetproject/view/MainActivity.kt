@@ -3,13 +3,14 @@ package ru.oliverhd.homepetproject.view
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import ru.oliverhd.homepetproject.databinding.ActivityMainBinding
+import ru.oliverhd.homepetproject.model.CountersModel
 import ru.oliverhd.homepetproject.presenter.MainPresenter
 
 class MainActivity : AppCompatActivity(), MainView {
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
-    private val presenter = MainPresenter(this)
+    private val presenter = MainPresenter(this, CountersModel())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,15 +28,15 @@ class MainActivity : AppCompatActivity(), MainView {
         }
     }
 
-    override fun setButtonOneText(text: String) {
+    override fun showCounterOne(text: String) {
         binding.btnCounter1.text = text
     }
 
-    override fun setButtonTwoText(text: String) {
+    override fun showCounterTwo(text: String) {
         binding.btnCounter2.text = text
     }
 
-    override fun setButtonThreeText(text: String) {
+    override fun showCounterThree(text: String) {
         binding.btnCounter3.text = text
     }
 }
