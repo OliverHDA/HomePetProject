@@ -1,5 +1,8 @@
 package ru.oliverhd.homepetproject.view
 
 interface MainView {
-    fun setButtonText(index: Int, text: String)
+
+    fun showCounterOne(text: String)
+    fun showCounterTwo(text: String)
+    fun showCounterThree(text: String)
 }
