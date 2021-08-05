@@ -1,42 +1,45 @@
 package ru.oliverhd.homepetproject.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.github.terrakok.cicerone.androidx.AppNavigator
+import moxy.MvpAppCompatActivity
+import moxy.ktx.moxyPresenter
+import ru.oliverhd.homepetproject.R
+import ru.oliverhd.homepetproject.app.App
+import ru.oliverhd.homepetproject.cicerone.AndroidScreens
 import ru.oliverhd.homepetproject.databinding.ActivityMainBinding
-import ru.oliverhd.homepetproject.model.CountersModel
 import ru.oliverhd.homepetproject.presenter.MainPresenter
 
-class MainActivity : AppCompatActivity(), MainView {
+class MainActivity : MvpAppCompatActivity(), MainView {
 
+    private val navigator = AppNavigator(this, R.id.container)
+
+    private val presenter by moxyPresenter { MainPresenter(App.instance.router, AndroidScreens()) }
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
-    private val presenter = MainPresenter(this, CountersModel())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        binding.btnCounter1.setOnClickListener {
-            presenter.counterOneClick()
-        }
-        binding.btnCounter2.setOnClickListener {
-            presenter.counterTwoClick()
-        }
-        binding.btnCounter3.setOnClickListener {
-            presenter.counterThreeClick()
-        }
     }
 
-    override fun showCounterOne(text: String) {
-        binding.btnCounter1.text = text
+    override fun onResumeFragments() {
+        super.onResumeFragments()
+        App.instance.navigatorHolder.setNavigator(navigator)
     }
 
-    override fun showCounterTwo(text: String) {
-        binding.btnCounter2.text = text
+    override fun onPause() {
+        super.onPause()
+        App.instance.navigatorHolder.removeNavigator()
     }
 
-    override fun showCounterThree(text: String) {
-        binding.btnCounter3.text = text
+    override fun onBackPressed() {
+        supportFragmentManager.fragments.forEach {
+            if (it is BackButtonListener && it.backPressed()) {
+                return
+            }
+        }
+        presenter.backClicked()
     }
 }
