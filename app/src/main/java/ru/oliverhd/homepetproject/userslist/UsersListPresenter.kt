@@ -1,18 +1,16 @@
-package ru.oliverhd.homepetproject.presenter
+package ru.oliverhd.homepetproject.userslist
 
 import com.github.terrakok.cicerone.Router
 import moxy.MvpPresenter
-import ru.oliverhd.homepetproject.cicerone.IScreens
-import ru.oliverhd.homepetproject.model.GithubUser
+import ru.oliverhd.homepetproject.UserItemView
+import ru.oliverhd.homepetproject.repository.GithubUser
 import ru.oliverhd.homepetproject.repository.GithubUsersRepo
-import ru.oliverhd.homepetproject.view.IUserListPresenter
-import ru.oliverhd.homepetproject.view.users.UsersView
-import ru.oliverhd.homepetproject.view.UserItemView
+import ru.oliverhd.homepetproject.user.UserScreen
 
-class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router: Router, val screens: IScreens) :
-    MvpPresenter<UsersView>() {
+class UsersListPresenter(private val usersRepo: GithubUsersRepo, private val router: Router) :
+    MvpPresenter<UsersListView>() {
 
-    class UsersListPresenter : IUserListPresenter {
+    class UsersListPresenter : UserListPresenter {
         val users = mutableListOf<GithubUser>()
         override var itemClickListener: ((UserItemView) -> Unit)? = null
 
@@ -32,7 +30,7 @@ class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router:
         loadData()
 
         usersListPresenter.itemClickListener = { itemView ->
-            router.navigateTo(screens.user(itemView.getLogin()), true)
+            router.navigateTo(UserScreen(itemView.getLogin()).create(), true)
         }
     }
 

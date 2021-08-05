@@ -1,4 +1,4 @@
-package ru.oliverhd.homepetproject.view.users
+package ru.oliverhd.homepetproject.userslist
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,26 +6,23 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
-import ru.oliverhd.homepetproject.app.App
-import ru.oliverhd.homepetproject.cicerone.AndroidScreens
+import ru.oliverhd.homepetproject.app.App.Navigation.router
 import ru.oliverhd.homepetproject.databinding.FragmentUsersBinding
-import ru.oliverhd.homepetproject.presenter.UsersPresenter
 import ru.oliverhd.homepetproject.repository.GithubUsersRepo
-import ru.oliverhd.homepetproject.view.BackButtonListener
+import ru.oliverhd.homepetproject.BackButtonListener
 
-class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
+class UsersListFragment : MvpAppCompatFragment(), UsersListView, BackButtonListener {
     companion object {
-        fun newInstance() = UsersFragment()
+        fun newInstance() = UsersListFragment()
     }
 
-    private val presenter: UsersPresenter by moxyPresenter {
-        UsersPresenter(
+    private val presenter: UsersListPresenter by moxyPresenter {
+        UsersListPresenter(
             GithubUsersRepo(),
-            App.instance.router,
-            AndroidScreens()
+            router
         )
     }
-    private var adapter: UsersRVAdapter? = null
+    private var adapter: UsersListRVAdapter? = null
 
     private var vb: FragmentUsersBinding? = null
 
@@ -45,7 +42,7 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
     override fun init() {
         vb?.rvUsers?.layoutManager = LinearLayoutManager(context)
-        adapter = UsersRVAdapter(presenter.usersListPresenter)
+        adapter = UsersListRVAdapter(presenter.usersListPresenter)
         vb?.rvUsers?.adapter = adapter
     }
 
@@ -53,5 +50,5 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
         adapter?.notifyDataSetChanged()
     }
 
-    override fun backPressed() = presenter.backClick()
+    override fun back() = presenter.backClick()
 }

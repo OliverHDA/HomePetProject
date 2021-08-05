@@ -1,14 +1,13 @@
-package ru.oliverhd.homepetproject.view.users
+package ru.oliverhd.homepetproject.userslist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import ru.oliverhd.homepetproject.UserItemView
 import ru.oliverhd.homepetproject.databinding.UsersRecyclerItemBinding
-import ru.oliverhd.homepetproject.view.IUserListPresenter
-import ru.oliverhd.homepetproject.view.UserItemView
 
-class UsersRVAdapter(private val presenter: IUserListPresenter) :
-    RecyclerView.Adapter<UsersRVAdapter.ViewHolder>() {
+class UsersListRVAdapter(private val presenter: UserListPresenter) :
+    RecyclerView.Adapter<UsersListRVAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =

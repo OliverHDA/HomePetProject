@@ -1,10 +1,8 @@
-package ru.oliverhd.homepetproject.view.user
+package ru.oliverhd.homepetproject.main
 
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.StateStrategyType
 
 @StateStrategyType(AddToEndSingleStrategy::class)
-interface UserView:MvpView {
-    fun showUserLogin(login: String)
-}
+interface MainView : MvpView

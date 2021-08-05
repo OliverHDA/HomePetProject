@@ -1,4 +1,4 @@
-package ru.oliverhd.homepetproject.model
+package ru.oliverhd.homepetproject.repository
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
