@@ -1,4 +1,4 @@
-package ru.oliverhd.homepetproject.view
+package ru.oliverhd.homepetproject.view.users
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,9 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.oliverhd.homepetproject.app.App
+import ru.oliverhd.homepetproject.cicerone.AndroidScreens
 import ru.oliverhd.homepetproject.databinding.FragmentUsersBinding
 import ru.oliverhd.homepetproject.presenter.UsersPresenter
 import ru.oliverhd.homepetproject.repository.GithubUsersRepo
+import ru.oliverhd.homepetproject.view.BackButtonListener
 
 class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     companion object {
@@ -19,7 +21,8 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     private val presenter: UsersPresenter by moxyPresenter {
         UsersPresenter(
             GithubUsersRepo(),
-            App.instance.router
+            App.instance.router,
+            AndroidScreens()
         )
     }
     private var adapter: UsersRVAdapter? = null

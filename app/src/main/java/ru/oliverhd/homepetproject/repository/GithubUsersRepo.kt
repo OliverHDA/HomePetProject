@@ -14,4 +14,11 @@ class GithubUsersRepo {
     fun getUsers(): List<GithubUser> {
         return repositories
     }
+     fun GetUserByLogin(login:String) : GithubUser? {
+         for (githubUser in repositories){
+             if (githubUser.login == login)
+             return githubUser
+         }
+         return null
+     }
 }

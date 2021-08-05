@@ -1,4 +1,4 @@
-package ru.oliverhd.homepetproject.view
+package ru.oliverhd.homepetproject.view.users
 
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleStrategy

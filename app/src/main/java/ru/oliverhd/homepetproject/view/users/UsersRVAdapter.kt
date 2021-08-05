@@ -1,9 +1,11 @@
-package ru.oliverhd.homepetproject.view
+package ru.oliverhd.homepetproject.view.users
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.oliverhd.homepetproject.databinding.UsersRecyclerItemBinding
+import ru.oliverhd.homepetproject.view.IUserListPresenter
+import ru.oliverhd.homepetproject.view.UserItemView
 
 class UsersRVAdapter(private val presenter: IUserListPresenter) :
     RecyclerView.Adapter<UsersRVAdapter.ViewHolder>() {
@@ -31,6 +33,12 @@ class UsersRVAdapter(private val presenter: IUserListPresenter) :
 
         override fun setLogin(text: String) = with(vb) {
             tvLogin.text = text
+        }
+
+        override fun getLogin(): String {
+           return with(vb) {
+               tvLogin.text.toString()
+            }
         }
     }
 }

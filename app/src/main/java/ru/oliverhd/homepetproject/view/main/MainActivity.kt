@@ -1,4 +1,4 @@
-package ru.oliverhd.homepetproject.view
+package ru.oliverhd.homepetproject.view.main
 
 import android.os.Bundle
 import com.github.terrakok.cicerone.androidx.AppNavigator
@@ -9,6 +9,7 @@ import ru.oliverhd.homepetproject.app.App
 import ru.oliverhd.homepetproject.cicerone.AndroidScreens
 import ru.oliverhd.homepetproject.databinding.ActivityMainBinding
 import ru.oliverhd.homepetproject.presenter.MainPresenter
+import ru.oliverhd.homepetproject.view.BackButtonListener
 
 class MainActivity : MvpAppCompatActivity(), MainView {
 

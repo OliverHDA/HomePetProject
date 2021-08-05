@@ -2,13 +2,14 @@ package ru.oliverhd.homepetproject.presenter
 
 import com.github.terrakok.cicerone.Router
 import moxy.MvpPresenter
+import ru.oliverhd.homepetproject.cicerone.IScreens
 import ru.oliverhd.homepetproject.model.GithubUser
 import ru.oliverhd.homepetproject.repository.GithubUsersRepo
 import ru.oliverhd.homepetproject.view.IUserListPresenter
-import ru.oliverhd.homepetproject.view.UsersView
+import ru.oliverhd.homepetproject.view.users.UsersView
 import ru.oliverhd.homepetproject.view.UserItemView
 
-class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router: Router) :
+class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router: Router, val screens: IScreens) :
     MvpPresenter<UsersView>() {
 
     class UsersListPresenter : IUserListPresenter {
@@ -31,7 +32,7 @@ class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router:
         loadData()
 
         usersListPresenter.itemClickListener = { itemView ->
-            //TODO: переход на экран пользователя
+            router.navigateTo(screens.user(itemView.getLogin()), true)
         }
     }
 
