@@ -1,18 +1,13 @@
 package ru.oliverhd.homepetproject.repository
 
+import io.reactivex.rxjava3.core.Single
+
 class GithubUsersRepo {
     private val users = generateUsersList()
 
-    fun getUsers(): List<GithubUser> {
-        return users
+    fun getUsers(): Single<List<GithubUser>> {
+        return Single.just(users)
     }
-     fun getUserByLogin(login:String) : GithubUser? {
-         for (githubUser in users){
-             if (githubUser.login == login)
-             return githubUser
-         }
-         return null
-     }
 
     private fun generateUsersList(): List<GithubUser> {
         val usersList = mutableListOf<GithubUser>()

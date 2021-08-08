@@ -1,6 +1,8 @@
 package ru.oliverhd.homepetproject.userslist
 
 import com.github.terrakok.cicerone.Router
+import io.reactivex.rxjava3.core.SingleObserver
+import io.reactivex.rxjava3.disposables.Disposable
 import moxy.MvpPresenter
 import ru.oliverhd.homepetproject.UserItemView
 import ru.oliverhd.homepetproject.repository.GithubUser
@@ -35,9 +37,20 @@ class UsersListPresenter(private val usersRepo: GithubUsersRepo, private val rou
     }
 
     private fun loadData() {
-        val users = usersRepo.getUsers()
-        usersListPresenter.users.addAll(users)
-        viewState.updateList()
+            usersRepo.getUsers().subscribe(object : SingleObserver<List<GithubUser>>{
+            var disposable: Disposable? = null
+            override fun onSubscribe(d: Disposable?) {
+                disposable = d
+            }
+
+            override fun onSuccess(t: List<GithubUser>?) {
+                t?.let { usersListPresenter.users.addAll(it) }
+            }
+
+            override fun onError(e: Throwable?) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 
     fun backClick(): Boolean {
