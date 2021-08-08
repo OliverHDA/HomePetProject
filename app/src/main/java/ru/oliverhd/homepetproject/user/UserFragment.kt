@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.oliverhd.homepetproject.BackButtonListener
@@ -52,7 +53,7 @@ class UserFragment : MvpAppCompatFragment(), UserView, BackButtonListener {
     }
 
     companion object {
-        fun newInstance(userLogin: String) =
+        fun newInstance(userLogin: String): Fragment =
             UserFragment().apply {
                 arguments = bundleOf(ARG_USER_LOGIN to userLogin)
             }

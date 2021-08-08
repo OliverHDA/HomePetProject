@@ -5,13 +5,16 @@ import moxy.MvpPresenter
 import ru.oliverhd.homepetproject.repository.GithubUsersRepo
 import ru.oliverhd.homepetproject.userslist.UsersListScreen
 
-class UserPresenter (private val userLogin: String, private val usersRepo: GithubUsersRepo, private val router: Router): MvpPresenter<UserView>() {
+class UserPresenter(
+    private val userLogin: String,
+    private val usersRepo: GithubUsersRepo,
+    private val router: Router
+) : MvpPresenter<UserView>() {
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        val user = usersRepo.getUserByLogin(userLogin)
-        if (user != null) {
-            viewState.showUserLogin(user.login)
+        usersRepo.getUserByLogin(userLogin)?.let {
+            viewState.showUserLogin(it.login)
         }
     }
 

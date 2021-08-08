@@ -3,6 +3,7 @@ package ru.oliverhd.homepetproject.userslist
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
@@ -13,7 +14,7 @@ import ru.oliverhd.homepetproject.BackButtonListener
 
 class UsersListFragment : MvpAppCompatFragment(), UsersListView, BackButtonListener {
     companion object {
-        fun newInstance() = UsersListFragment()
+        fun newInstance(): Fragment = UsersListFragment()
     }
 
     private val presenter: UsersListPresenter by moxyPresenter {
