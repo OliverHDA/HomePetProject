@@ -4,4 +4,7 @@
     <string name="counter_two">Counter two</string>
     <string name="counter_three">Counter three</string>
     <string name="zero">0</string>
+
+    <string name="user_avatar_icon_desription">User avatar icon</string>
+    <string name="user_login">User login</string>
 </resources>
