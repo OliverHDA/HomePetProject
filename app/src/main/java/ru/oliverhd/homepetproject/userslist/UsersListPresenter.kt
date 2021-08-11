@@ -7,10 +7,10 @@ import io.reactivex.rxjava3.disposables.Disposable
 import moxy.MvpPresenter
 import ru.oliverhd.homepetproject.UserItemView
 import ru.oliverhd.homepetproject.repository.GithubUser
-import ru.oliverhd.homepetproject.repository.GithubUsersRepositoryImpl
+import ru.oliverhd.homepetproject.repository.GithubUsersRepository
 import ru.oliverhd.homepetproject.user.UserScreen
 
-class UsersListPresenter(private val usersRepositoryImpl: GithubUsersRepositoryImpl, private val router: Router) :
+class UsersListPresenter(private val usersRepository: GithubUsersRepository, private val router: Router) :
     MvpPresenter<UsersListView>() {
 
     private val disposables = CompositeDisposable()
@@ -40,7 +40,7 @@ class UsersListPresenter(private val usersRepositoryImpl: GithubUsersRepositoryI
     }
 
     private fun loadData() {
-        usersRepositoryImpl
+        usersRepository
             .getUsers()
             .subscribe(object : SingleObserver<List<GithubUser>> {
             override fun onSubscribe(d: Disposable?) {

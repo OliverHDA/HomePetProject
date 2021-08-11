@@ -6,12 +6,12 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import moxy.MvpPresenter
 import ru.oliverhd.homepetproject.repository.GithubUser
-import ru.oliverhd.homepetproject.repository.GithubUsersRepositoryImpl
+import ru.oliverhd.homepetproject.repository.GithubUsersRepository
 import ru.oliverhd.homepetproject.userslist.UsersListScreen
 
 class UserPresenter(
     private val userLogin: String,
-    private val usersRepositoryImpl: GithubUsersRepositoryImpl,
+    private val usersRepository: GithubUsersRepository,
     private val router: Router
 ) : MvpPresenter<UserView>() {
 
@@ -19,7 +19,7 @@ class UserPresenter(
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        usersRepositoryImpl
+        usersRepository
             .getUsers()
             .subscribe(object : SingleObserver<List<GithubUser>> {
 

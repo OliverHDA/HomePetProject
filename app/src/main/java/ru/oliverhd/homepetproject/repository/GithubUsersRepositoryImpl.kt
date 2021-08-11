@@ -2,10 +2,10 @@ package ru.oliverhd.homepetproject.repository
 
 import io.reactivex.rxjava3.core.Single
 
-class GithubUsersRepo {
+class GithubUsersRepositoryImpl: GithubUsersRepository {
     private val users = generateUsersList()
 
-    fun getUsers(): Single<List<GithubUser>> {
+    override fun getUsers(): Single<List<GithubUser>> {
         return Single.just(users)
     }
 

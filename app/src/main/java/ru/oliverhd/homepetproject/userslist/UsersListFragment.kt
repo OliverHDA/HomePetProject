@@ -8,10 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
+import ru.oliverhd.homepetproject.BackButtonListener
 import ru.oliverhd.homepetproject.app.App.Navigation.router
 import ru.oliverhd.homepetproject.databinding.FragmentUsersBinding
-import ru.oliverhd.homepetproject.repository.GithubUsersRepositoryImpl
-import ru.oliverhd.homepetproject.BackButtonListener
+import ru.oliverhd.homepetproject.repository.GithubUsersRepositoryFactory
 
 class UsersListFragment : MvpAppCompatFragment(), UsersListView, BackButtonListener {
     companion object {
@@ -20,7 +20,7 @@ class UsersListFragment : MvpAppCompatFragment(), UsersListView, BackButtonListe
 
     private val presenter: UsersListPresenter by moxyPresenter {
         UsersListPresenter(
-            GithubUsersRepositoryImpl(),
+            GithubUsersRepositoryFactory.create(),
             router
         )
     }

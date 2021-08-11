@@ -12,7 +12,7 @@ import moxy.ktx.moxyPresenter
 import ru.oliverhd.homepetproject.BackButtonListener
 import ru.oliverhd.homepetproject.app.App.Navigation.router
 import ru.oliverhd.homepetproject.databinding.FragmentUserBinding
-import ru.oliverhd.homepetproject.repository.GithubUsersRepositoryImpl
+import ru.oliverhd.homepetproject.repository.GithubUsersRepositoryFactory
 
 private const val ARG_USER_LOGIN = "userLogin"
 
@@ -25,7 +25,7 @@ class UserFragment : MvpAppCompatFragment(), UserView, BackButtonListener {
     private val presenter by moxyPresenter {
         UserPresenter(
             userLogin,
-            GithubUsersRepositoryImpl(),
+            GithubUsersRepositoryFactory.create(),
             router
         )
     }
