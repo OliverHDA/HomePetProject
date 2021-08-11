@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import moxy.MvpAppCompatFragment
@@ -11,7 +12,7 @@ import moxy.ktx.moxyPresenter
 import ru.oliverhd.homepetproject.BackButtonListener
 import ru.oliverhd.homepetproject.app.App.Navigation.router
 import ru.oliverhd.homepetproject.databinding.FragmentUserBinding
-import ru.oliverhd.homepetproject.repository.GithubUsersRepo
+import ru.oliverhd.homepetproject.repository.GithubUsersRepositoryImpl
 
 private const val ARG_USER_LOGIN = "userLogin"
 
@@ -24,7 +25,7 @@ class UserFragment : MvpAppCompatFragment(), UserView, BackButtonListener {
     private val presenter by moxyPresenter {
         UserPresenter(
             userLogin,
-            GithubUsersRepo(),
+            GithubUsersRepositoryImpl(),
             router
         )
     }
@@ -46,6 +47,10 @@ class UserFragment : MvpAppCompatFragment(), UserView, BackButtonListener {
 
     override fun showUserLogin(login: String) {
         binding?.UserLoginTextView?.text = login
+    }
+
+    override fun error(error: Throwable) {
+        Toast.makeText(context, error.message, Toast.LENGTH_LONG).show()
     }
 
     override fun back(): Boolean {

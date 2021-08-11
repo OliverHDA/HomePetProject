@@ -3,13 +3,14 @@ package ru.oliverhd.homepetproject.userslist
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.oliverhd.homepetproject.app.App.Navigation.router
 import ru.oliverhd.homepetproject.databinding.FragmentUsersBinding
-import ru.oliverhd.homepetproject.repository.GithubUsersRepo
+import ru.oliverhd.homepetproject.repository.GithubUsersRepositoryImpl
 import ru.oliverhd.homepetproject.BackButtonListener
 
 class UsersListFragment : MvpAppCompatFragment(), UsersListView, BackButtonListener {
@@ -19,7 +20,7 @@ class UsersListFragment : MvpAppCompatFragment(), UsersListView, BackButtonListe
 
     private val presenter: UsersListPresenter by moxyPresenter {
         UsersListPresenter(
-            GithubUsersRepo(),
+            GithubUsersRepositoryImpl(),
             router
         )
     }
@@ -49,6 +50,10 @@ class UsersListFragment : MvpAppCompatFragment(), UsersListView, BackButtonListe
 
     override fun updateList() {
         adapter?.notifyDataSetChanged()
+    }
+
+    override fun error(error: Throwable) {
+        Toast.makeText(context, error.message, Toast.LENGTH_LONG).show()
     }
 
     override fun back() = presenter.backClick()
