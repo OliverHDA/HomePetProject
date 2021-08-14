@@ -6,4 +6,5 @@ import moxy.viewstate.strategy.alias.SingleState
 @SingleState
 interface UserView : MvpView {
     fun showUserLogin(login: String)
+    fun error (error: Throwable)
 }

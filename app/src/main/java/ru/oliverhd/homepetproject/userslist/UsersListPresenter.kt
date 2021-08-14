@@ -1,14 +1,19 @@
 package ru.oliverhd.homepetproject.userslist
 
 import com.github.terrakok.cicerone.Router
+import io.reactivex.rxjava3.core.SingleObserver
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
 import moxy.MvpPresenter
 import ru.oliverhd.homepetproject.UserItemView
 import ru.oliverhd.homepetproject.repository.GithubUser
-import ru.oliverhd.homepetproject.repository.GithubUsersRepo
+import ru.oliverhd.homepetproject.repository.GithubUsersRepositoryImpl
 import ru.oliverhd.homepetproject.user.UserScreen
 
-class UsersListPresenter(private val usersRepo: GithubUsersRepo, private val router: Router) :
+class UsersListPresenter(private val usersRepositoryImpl: GithubUsersRepositoryImpl, private val router: Router) :
     MvpPresenter<UsersListView>() {
+
+    private val disposables = CompositeDisposable()
 
     class UsersListPresenter : UserListPresenter {
         val users = mutableListOf<GithubUser>()
@@ -35,9 +40,28 @@ class UsersListPresenter(private val usersRepo: GithubUsersRepo, private val rou
     }
 
     private fun loadData() {
-        val users = usersRepo.getUsers()
-        usersListPresenter.users.addAll(users)
-        viewState.updateList()
+        usersRepositoryImpl
+            .getUsers()
+            .subscribe(object : SingleObserver<List<GithubUser>> {
+            override fun onSubscribe(d: Disposable?) {
+                disposables.add(d)
+            }
+
+            override fun onSuccess(t: List<GithubUser>?) {
+                t?.let { usersListPresenter.users.addAll(it) }
+            }
+
+            override fun onError(e: Throwable?) {
+                e?.let {
+                    viewState.error(e)
+                }
+            }
+        })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposables.clear()
     }
 
     fun backClick(): Boolean {
