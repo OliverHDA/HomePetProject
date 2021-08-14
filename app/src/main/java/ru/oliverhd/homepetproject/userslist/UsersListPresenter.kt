@@ -6,17 +6,20 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import moxy.MvpPresenter
 import ru.oliverhd.homepetproject.UserItemView
-import ru.oliverhd.homepetproject.repository.GithubUser
-import ru.oliverhd.homepetproject.repository.GithubUsersRepositoryImpl
+import ru.oliverhd.homepetproject.repository.GithubUsersRepository
 import ru.oliverhd.homepetproject.user.UserScreen
+import ru.oliverhd.homepetproject.userslist.GithubUserViewModel.Mapper
 
-class UsersListPresenter(private val usersRepositoryImpl: GithubUsersRepositoryImpl, private val router: Router) :
+class UsersListPresenter(
+    private val usersRepository: GithubUsersRepository,
+    private val router: Router
+) :
     MvpPresenter<UsersListView>() {
 
     private val disposables = CompositeDisposable()
 
     class UsersListPresenter : UserListPresenter {
-        val users = mutableListOf<GithubUser>()
+        val users = mutableListOf<GithubUserViewModel>()
         override var itemClickListener: ((UserItemView) -> Unit)? = null
 
         override fun getCount() = users.size
@@ -40,23 +43,24 @@ class UsersListPresenter(private val usersRepositoryImpl: GithubUsersRepositoryI
     }
 
     private fun loadData() {
-        usersRepositoryImpl
+        usersRepository
             .getUsers()
-            .subscribe(object : SingleObserver<List<GithubUser>> {
-            override fun onSubscribe(d: Disposable?) {
-                disposables.add(d)
-            }
-
-            override fun onSuccess(t: List<GithubUser>?) {
-                t?.let { usersListPresenter.users.addAll(it) }
-            }
-
-            override fun onError(e: Throwable?) {
-                e?.let {
-                    viewState.error(e)
+            .map { users -> users.map(Mapper::map) }
+            .subscribe(object : SingleObserver<List<GithubUserViewModel>> {
+                override fun onSubscribe(d: Disposable?) {
+                    disposables.add(d)
                 }
-            }
-        })
+
+                override fun onSuccess(t: List<GithubUserViewModel>?) {
+                    t?.let { usersListPresenter.users.addAll(it) }
+                }
+
+                override fun onError(e: Throwable?) {
+                    e?.let {
+                        viewState.error(e)
+                    }
+                }
+            })
     }
 
     override fun onDestroy() {
