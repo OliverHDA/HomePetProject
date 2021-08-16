@@ -11,13 +11,13 @@
         android:layout_width="@dimen/user_avatar_size"
         android:layout_height="@dimen/user_avatar_size"
         android:layout_margin="@dimen/small_margin"
-        android:contentDescription="@string/user_avatar_icon_desription"
+        android:contentDescription="@string/user_avatar_icon_description"
         android:src="@drawable/ic_no_photo_vector"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/UserLoginTextView"
+        android:id="@+id/userLoginTextView"
         android:layout_width="@dimen/user_login_wight"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/small_margin"
@@ -26,5 +26,15 @@
         android:textSize="@dimen/user_login_text_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/avatarImageView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/repositoriesRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/userLoginTextView"
+        android:layout_margin="@dimen/small_margin"
+        android:padding="@dimen/small_padding"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

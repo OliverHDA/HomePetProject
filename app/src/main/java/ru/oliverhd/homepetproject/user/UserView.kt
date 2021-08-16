@@ -1,10 +1,12 @@
 package ru.oliverhd.homepetproject.user
 
-import moxy.MvpView
 import moxy.viewstate.strategy.alias.SingleState
+import ru.oliverhd.homepetproject.ScreenView
+import ru.oliverhd.homepetproject.repository.GitHubRepository
+import ru.oliverhd.homepetproject.repository.GithubUser
 
 @SingleState
-interface UserView : MvpView {
-    fun showUserLogin(login: String)
-    fun error (error: Throwable)
+interface UserView : ScreenView {
+    fun showRepositories(repositories: List<GitHubRepository>)
+    fun showContent(githubUser: GithubUser)
 }

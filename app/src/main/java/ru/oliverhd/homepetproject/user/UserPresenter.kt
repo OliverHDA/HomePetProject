@@ -1,13 +1,14 @@
 package ru.oliverhd.homepetproject.user
 
 import com.github.terrakok.cicerone.Router
-import io.reactivex.rxjava3.core.SingleObserver
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.MvpPresenter
+import ru.oliverhd.homepetproject.githubrepository.RepositoryScreen
+import ru.oliverhd.homepetproject.repository.GitHubRepository
+import ru.oliverhd.homepetproject.repository.GithubUser
 import ru.oliverhd.homepetproject.repository.GithubUsersRepository
-import ru.oliverhd.homepetproject.userslist.GithubUserViewModel
-import ru.oliverhd.homepetproject.userslist.GithubUserViewModel.Mapper
 import ru.oliverhd.homepetproject.userslist.UsersListScreen
 
 class UserPresenter(
@@ -20,39 +21,43 @@ class UserPresenter(
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        usersRepository
-            .getUsers()
-            .map { users -> users.map(Mapper::map) }
-            .subscribe(object : SingleObserver<List<GithubUserViewModel>> {
 
-                override fun onSubscribe(d: Disposable?) {
-                    disposables.add(d)
-                }
-
-                override fun onSuccess(t: List<GithubUserViewModel>?) {
-                    t?.let {
-                        for (githubUser in t) {
-                            if (githubUser.login == userLogin)
-                                viewState.showUserLogin(githubUser.login)
-                        }
-                    }
-                }
-
-                override fun onError(e: Throwable?) {
-                    e?.let {
-                        viewState.error(e)
-                    }
-                }
-            })
+        disposables.add(
+            usersRepository
+                .getUserByLogin(userLogin)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(
+                    ::onUserSuccess,
+                    viewState::error
+                )
+        )
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        disposables.clear()
+    private fun onUserSuccess(githubUser: GithubUser) {
+        viewState.showContent(githubUser)
+        disposables.add(
+            usersRepository.getRepositories(githubUser.reposUrl)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(
+                    viewState::showRepositories,
+                    viewState::error
+                )
+        )
     }
 
     fun click(): Boolean {
         router.backTo(UsersListScreen.create())
         return false
+    }
+
+    fun openRepository(gitHubRepository: GitHubRepository) {
+        router.navigateTo(RepositoryScreen(gitHubRepository).create())
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposables.clear()
     }
 }
