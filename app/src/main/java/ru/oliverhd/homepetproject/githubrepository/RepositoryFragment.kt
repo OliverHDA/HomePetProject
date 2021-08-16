@@ -14,18 +14,11 @@ import ru.oliverhd.homepetproject.app.App.Navigation.router
 import ru.oliverhd.homepetproject.databinding.FragmentRepositoryBinding
 import ru.oliverhd.homepetproject.repository.GitHubRepository
 
-private const val ARG_REPOSITORY = "repositoryName"
-
-class RepositoryFragment : MvpAppCompatFragment(), RepositoryView, BackButtonListener {
-
-    private val gitHubRepository: GitHubRepository? by lazy {
-        requireArguments().getParcelable(ARG_REPOSITORY) as GitHubRepository?
-    }
+class RepositoryFragment : MvpAppCompatFragment(), RepositoryView
+{
 
     private val presenter by moxyPresenter {
         RepositoryPresenter(
-            gitHubRepository,
-            router
         )
     }
 
@@ -53,14 +46,7 @@ class RepositoryFragment : MvpAppCompatFragment(), RepositoryView, BackButtonLis
         Toast.makeText(context, error.message, Toast.LENGTH_LONG).show()
     }
 
-    override fun back(): Boolean {
-        return presenter.back()
-    }
-
     companion object {
-        fun newInstance(gitHubRepository: GitHubRepository): Fragment =
-            RepositoryFragment().apply {
-                arguments = bundleOf(ARG_REPOSITORY to gitHubRepository)
-            }
+        fun newInstance(): Fragment = RepositoryFragment()
     }
 }

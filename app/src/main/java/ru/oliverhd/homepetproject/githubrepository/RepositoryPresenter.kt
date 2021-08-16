@@ -1,24 +1,25 @@
 package ru.oliverhd.homepetproject.githubrepository
 
-import com.github.terrakok.cicerone.Router
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import moxy.MvpPresenter
-import ru.oliverhd.homepetproject.repository.GitHubRepository
-import ru.oliverhd.homepetproject.user.UserScreen
+import ru.oliverhd.homepetproject.RxRepo
 
 class RepositoryPresenter(
-    private val gitHubRepository: GitHubRepository?,
-    private val router: Router
 ) :
     MvpPresenter<RepositoryView>() {
 
+    private val disposables = CompositeDisposable()
+
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        gitHubRepository?.let(viewState::showContent)
-
+        disposables.add(
+            RxRepo.getRxRepo()
+                .subscribe(viewState::showContent, viewState::error)
+        )
     }
 
-    fun back(): Boolean {
-        router.backTo(gitHubRepository?.owner?.login?.let { UserScreen(it).create() })
-        return false
+    override fun onDestroy() {
+        disposables.clear()
+        super.onDestroy()
     }
 }
