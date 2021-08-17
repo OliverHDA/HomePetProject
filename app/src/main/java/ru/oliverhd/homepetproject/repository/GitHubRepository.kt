@@ -1,15 +1,37 @@
 package ru.oliverhd.homepetproject.repository
 
 import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
+@Entity(tableName = "repositories")
 @Parcelize
 data class GitHubRepository(
-    @SerializedName("id") val id: Int,
-    @SerializedName("name") val name: String,
-    @SerializedName("owner") val owner: GithubUser,
-    @SerializedName("description") val description: String,
-    @SerializedName("stargazers_count") val stargazersCount: Int,
-    @SerializedName("forks_count") val forksCount: Int
+    @PrimaryKey
+    @SerializedName("id")
+    val id: Int,
+
+    @ColumnInfo(name = "name")
+    @SerializedName("name")
+    val name: String,
+
+    @ColumnInfo(name = "owner")
+    @SerializedName("owner")
+    val owner: GithubUser,
+
+    @ColumnInfo(name = "description")
+    @SerializedName("description")
+    val description: String?,
+
+    @ColumnInfo(name = "stargazers")
+    @SerializedName("stargazers_count")
+    val stargazersCount: Int = 0,
+
+    @ColumnInfo(name = "forks")
+    @SerializedName("forks_count")
+    val forksCount: Int = 0
 ) : Parcelable

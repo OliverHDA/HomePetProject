@@ -2,46 +2,48 @@ package ru.oliverhd.homepetproject.repository
 
 import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Single
-import ru.oliverhd.homepetproject.datasource.CacheDataSource
-import ru.oliverhd.homepetproject.datasource.DataSource
+import ru.oliverhd.homepetproject.datasource.remote.RemoteDataSource
+import ru.oliverhd.homepetproject.datasource.repositories.CacheRepositoriesDataSource
+import ru.oliverhd.homepetproject.datasource.users.CacheUsersDataSource
 
 class GithubUsersRepositoryImpl(
-    private val remoteDataSource: DataSource,
-    private val cacheDataSource: CacheDataSource
+    private val remoteDataSource: RemoteDataSource,
+    private val cacheUsersDataSource: CacheUsersDataSource,
+    private val cacheRepositoriesDataSource: CacheRepositoriesDataSource
 ) : GithubUsersRepository {
 
-    override fun getUsers(): Single<List<GithubUser>> {
-        return cacheDataSource
+    override fun getUsers(): Single<List<GithubUser>> =
+        cacheUsersDataSource
             .getUsers()
             .flatMap { users ->
                 if (users.isEmpty()) {
                     remoteDataSource.getUsers()
-                        .flatMap{
-                            cacheDataSource.retainUsers(it)}
+                        .flatMap {
+                            cacheUsersDataSource.retainUsers(it)
+                        }
                 } else {
                     Single.just(users)
                 }
             }
-    }
 
-    override fun getUserByLogin(login: String): Maybe<GithubUser> {
-        return cacheDataSource
+    override fun getUserByLogin(login: String): Maybe<GithubUser> =
+        cacheUsersDataSource
             .getUserByLogin(login)
             .switchIfEmpty(remoteDataSource.getUserByLogin(login))
-    }
 
-    override fun getRepositories(url: String): Single<List<GitHubRepository>> {
-        return cacheDataSource
+
+    override fun getRepositories(
+        url: String,
+        ownerLogin: String
+    ): Single<List<GitHubRepository>> =
+        cacheRepositoriesDataSource
             .getRepositories(url)
             .flatMap { repositories ->
-                if (repositories.isEmpty()) {
+                if (repositories.isEmpty() || repositories[0].owner.login != ownerLogin) {
                     remoteDataSource.getRepositories(url)
-                        .flatMap(
-                            cacheDataSource::retainRepositories
-                        )
+                        .flatMap { cacheRepositoriesDataSource.retainRepositories(it, url) }
                 } else {
                     Single.just(repositories)
                 }
             }
-    }
 }
