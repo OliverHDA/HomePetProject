@@ -2,7 +2,6 @@ package ru.oliverhd.homepetproject.user
 
 import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.MvpPresenter
@@ -39,7 +38,7 @@ class UserPresenter(
     private fun onUserSuccess(githubUser: GithubUser) {
         viewState.showContent(githubUser)
         disposables.add(
-            usersRepository.getRepositories(githubUser.reposUrl)
+            usersRepository.getRepositories(githubUser.reposUrl, githubUser.login)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(

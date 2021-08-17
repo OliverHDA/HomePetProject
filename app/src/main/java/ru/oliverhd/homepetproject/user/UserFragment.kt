@@ -31,7 +31,7 @@ class UserFragment : MvpAppCompatFragment(), UserView, BackButtonListener,
     private val presenter by moxyPresenter {
         UserPresenter(
             userLogin = userLogin,
-            usersRepository = GithubUsersRepositoryFactory.create(),
+            usersRepository = GithubUsersRepositoryFactory.create(requireContext()),
             router = router
         )
     }

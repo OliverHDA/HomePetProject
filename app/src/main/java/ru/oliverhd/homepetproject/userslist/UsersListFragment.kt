@@ -20,7 +20,7 @@ class UsersListFragment : MvpAppCompatFragment(), UsersListView, BackButtonListe
 
     private val presenter: UsersListPresenter by moxyPresenter {
         UsersListPresenter(
-            GithubUsersRepositoryFactory.create(),
+            GithubUsersRepositoryFactory.create(requireContext()),
             router
         )
     }

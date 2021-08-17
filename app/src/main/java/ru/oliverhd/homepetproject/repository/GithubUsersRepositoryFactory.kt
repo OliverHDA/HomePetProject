@@ -1,9 +1,15 @@
 package ru.oliverhd.homepetproject.repository
 
-import ru.oliverhd.homepetproject.datasource.CacheDataSourceFactory
-import ru.oliverhd.homepetproject.datasource.RemoteDataSourceFactory
+import android.content.Context
+import ru.oliverhd.homepetproject.datasource.users.CacheUsersDataSourceFactory
+import ru.oliverhd.homepetproject.datasource.remote.RemoteDataSourceFactory
+import ru.oliverhd.homepetproject.datasource.repositories.CacheRepositoriesDataSourceFactory
 
 object GithubUsersRepositoryFactory {
 
-    fun create(): GithubUsersRepository = GithubUsersRepositoryImpl(RemoteDataSourceFactory.create(), CacheDataSourceFactory.create())
+    fun create(context: Context): GithubUsersRepository = GithubUsersRepositoryImpl(
+        RemoteDataSourceFactory.create(),
+        CacheUsersDataSourceFactory.create(context),
+        CacheRepositoriesDataSourceFactory.create(context)
+    )
 }
