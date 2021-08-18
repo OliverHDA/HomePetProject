@@ -2,10 +2,14 @@ package ru.oliverhd.homepetproject.datasource.users
 
 import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Single
+import ru.oliverhd.homepetproject.di.Persisted
 import ru.oliverhd.homepetproject.repository.GithubUser
 import ru.oliverhd.homepetproject.storage.GitHubStorage
+import javax.inject.Inject
 
-class CacheUsersDataSourceImpl(private val gitHubStorage: GitHubStorage) : CacheUsersDataSource {
+class CacheUsersDataSourceImpl @Inject constructor(
+    @Persisted private val gitHubStorage: GitHubStorage
+    ) : CacheUsersDataSource {
 
     override fun retainUsers(users: List<GithubUser>): Single<List<GithubUser>> =
         gitHubStorage.gitHubUserDao()

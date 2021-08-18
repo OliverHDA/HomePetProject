@@ -5,17 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
-import ru.oliverhd.homepetproject.BackButtonListener
-import ru.oliverhd.homepetproject.app.App.Navigation.router
 import ru.oliverhd.homepetproject.databinding.FragmentRepositoryBinding
 import ru.oliverhd.homepetproject.repository.GitHubRepository
 
-class RepositoryFragment : MvpAppCompatFragment(), RepositoryView
-{
+class RepositoryFragment : MvpAppCompatFragment(), RepositoryView {
 
     private val presenter by moxyPresenter {
         RepositoryPresenter(

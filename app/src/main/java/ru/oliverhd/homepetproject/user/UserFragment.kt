@@ -9,29 +9,36 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import moxy.MvpAppCompatFragment
+import com.github.terrakok.cicerone.Router
 import moxy.ktx.moxyPresenter
 import ru.oliverhd.homepetproject.BackButtonListener
-import ru.oliverhd.homepetproject.app.App.Navigation.router
 import ru.oliverhd.homepetproject.databinding.FragmentUserBinding
+import ru.oliverhd.homepetproject.main.AbsFragment
 import ru.oliverhd.homepetproject.repository.GitHubRepository
 import ru.oliverhd.homepetproject.repository.GithubUser
-import ru.oliverhd.homepetproject.repository.GithubUsersRepositoryFactory
+import ru.oliverhd.homepetproject.repository.GithubUsersRepository
+import javax.inject.Inject
 
 private const val ARG_USER_LOGIN = "userLogin"
 
-class UserFragment : MvpAppCompatFragment(), UserView, BackButtonListener,
+class UserFragment : AbsFragment(), UserView, BackButtonListener,
     RepositoriesAdapter.Delegate {
 
     private val userLogin: String by lazy {
         arguments?.getString(ARG_USER_LOGIN).orEmpty()
     }
 
+    @Inject
+    lateinit var router: Router
+
+    @Inject
+    lateinit var githubUsersRepository: GithubUsersRepository
+
     @Suppress("unused")
     private val presenter by moxyPresenter {
         UserPresenter(
             userLogin = userLogin,
-            usersRepository = GithubUsersRepositoryFactory.create(requireContext()),
+            usersRepository = githubUsersRepository,
             router = router
         )
     }

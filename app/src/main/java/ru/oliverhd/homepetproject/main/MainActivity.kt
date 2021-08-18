@@ -1,18 +1,24 @@
 package ru.oliverhd.homepetproject.main
 
 import android.os.Bundle
+import com.github.terrakok.cicerone.NavigatorHolder
+import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
-import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
-import ru.oliverhd.homepetproject.R
-import ru.oliverhd.homepetproject.app.App.Navigation.navigatorHolder
-import ru.oliverhd.homepetproject.app.App.Navigation.router
-import ru.oliverhd.homepetproject.databinding.ActivityMainBinding
 import ru.oliverhd.homepetproject.BackButtonListener
+import ru.oliverhd.homepetproject.R
+import ru.oliverhd.homepetproject.databinding.ActivityMainBinding
+import javax.inject.Inject
 
-class MainActivity : MvpAppCompatActivity(), MainView {
+class MainActivity : AbsActivity(), MainView {
 
     private val navigator = AppNavigator(this, R.id.container)
+
+    @Inject
+    lateinit var navigatorHolder: NavigatorHolder
+
+    @Inject
+    lateinit var router: Router
 
     private val presenter by moxyPresenter { MainPresenter(router) }
     private var _binding: ActivityMainBinding? = null

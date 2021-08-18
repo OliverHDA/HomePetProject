@@ -1,17 +1,21 @@
 package ru.oliverhd.homepetproject.app
 
-import android.app.Application
 import com.github.terrakok.cicerone.Cicerone
-import com.github.terrakok.cicerone.Router
+import dagger.android.AndroidInjector
+import dagger.android.DaggerApplication
+import ru.oliverhd.homepetproject.di.DaggerApplicationComponent
 
-class App : Application() {
+class App : DaggerApplication() {
 
-    companion object Navigation {
-        private val cicerone: Cicerone<Router> by lazy {
-            Cicerone.create()
-        }
+    override fun applicationInjector(): AndroidInjector<App> =
+        DaggerApplicationComponent
+            .builder()
+            .withContext(applicationContext)
+            .apply {
+                val cicerone = Cicerone.create()
 
-        val navigatorHolder get() = cicerone.getNavigatorHolder()
-        val router get() = cicerone.router
-    }
+                withRouter(cicerone.router)
+                withNavigatorHolder(cicerone.getNavigatorHolder())
+            }
+            .build()
 }

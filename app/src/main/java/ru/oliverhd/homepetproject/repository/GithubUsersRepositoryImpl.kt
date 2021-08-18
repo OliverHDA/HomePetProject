@@ -5,8 +5,9 @@ import io.reactivex.rxjava3.core.Single
 import ru.oliverhd.homepetproject.datasource.remote.RemoteDataSource
 import ru.oliverhd.homepetproject.datasource.repositories.CacheRepositoriesDataSource
 import ru.oliverhd.homepetproject.datasource.users.CacheUsersDataSource
+import javax.inject.Inject
 
-class GithubUsersRepositoryImpl(
+class GithubUsersRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val cacheUsersDataSource: CacheUsersDataSource,
     private val cacheRepositoriesDataSource: CacheRepositoriesDataSource
