@@ -5,4 +5,7 @@
     <dimen name="user_login_wight">150dp</dimen>
     <dimen name="user_login_text_size">20sp</dimen>
     <dimen name="small_padding">10dp</dimen>
+    <dimen name="card_view_corner_radius">10dp</dimen>
+    <dimen name="card_view_elevation">3dp</dimen>
+    <dimen name="repository_recycler_item_text_size">16sp</dimen>
 </resources>

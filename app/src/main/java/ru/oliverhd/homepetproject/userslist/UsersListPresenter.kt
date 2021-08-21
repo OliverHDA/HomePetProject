@@ -1,9 +1,11 @@
 package ru.oliverhd.homepetproject.userslist
 
 import com.github.terrakok.cicerone.Router
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.SingleObserver
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.MvpPresenter
 import ru.oliverhd.homepetproject.UserItemView
 import ru.oliverhd.homepetproject.repository.GithubUsersRepository
@@ -45,6 +47,8 @@ class UsersListPresenter(
     private fun loadData() {
         usersRepository
             .getUsers()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.newThread())
             .map { users -> users.map(Mapper::map) }
             .subscribe(object : SingleObserver<List<GithubUserViewModel>> {
                 override fun onSubscribe(d: Disposable?) {
@@ -53,6 +57,7 @@ class UsersListPresenter(
 
                 override fun onSuccess(t: List<GithubUserViewModel>?) {
                     t?.let { usersListPresenter.users.addAll(it) }
+                    viewState.updateList()
                 }
 
                 override fun onError(e: Throwable?) {
