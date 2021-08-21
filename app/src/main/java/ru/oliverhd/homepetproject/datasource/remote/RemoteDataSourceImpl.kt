@@ -5,8 +5,10 @@ import io.reactivex.rxjava3.core.Single
 import ru.oliverhd.homepetproject.api.GitHubApi
 import ru.oliverhd.homepetproject.repository.GitHubRepository
 import ru.oliverhd.homepetproject.repository.GithubUser
+import javax.inject.Inject
 
-class RemoteDataSourceImpl(private val gitHubApi: GitHubApi) : RemoteDataSource {
+class RemoteDataSourceImpl @Inject constructor(private val gitHubApi: GitHubApi) :
+    RemoteDataSource {
 
     override fun getUsers(): Single<List<GithubUser>> =
         gitHubApi.getUsers()

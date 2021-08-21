@@ -6,22 +6,27 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.terrakok.cicerone.Router
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.oliverhd.homepetproject.BackButtonListener
-import ru.oliverhd.homepetproject.app.App.Navigation.router
+import ru.oliverhd.homepetproject.app.App
 import ru.oliverhd.homepetproject.databinding.FragmentUsersBinding
-import ru.oliverhd.homepetproject.repository.GithubUsersRepositoryFactory
+import ru.oliverhd.homepetproject.repository.GithubUsersRepository
+import javax.inject.Inject
 
 class UsersListFragment : MvpAppCompatFragment(), UsersListView, BackButtonListener {
-    companion object {
-        fun newInstance(): Fragment = UsersListFragment()
-    }
+
+    @Inject
+    lateinit var router: Router
+
+    @Inject
+    lateinit var githubUsersRepository: GithubUsersRepository
 
     private val presenter: UsersListPresenter by moxyPresenter {
         UsersListPresenter(
-            GithubUsersRepositoryFactory.create(requireContext()),
-            router
+            usersRepository = githubUsersRepository,
+            router = router
         )
     }
     private var adapter: UsersListRVAdapter? = null
@@ -57,4 +62,10 @@ class UsersListFragment : MvpAppCompatFragment(), UsersListView, BackButtonListe
     }
 
     override fun back() = presenter.backClick()
+
+    companion object {
+        fun newInstance(): Fragment = UsersListFragment().apply {
+            App.instance.applicationComponent.inject(this)
+        }
+    }
 }

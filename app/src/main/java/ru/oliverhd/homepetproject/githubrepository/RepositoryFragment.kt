@@ -9,16 +9,20 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
-import ru.oliverhd.homepetproject.BackButtonListener
-import ru.oliverhd.homepetproject.app.App.Navigation.router
 import ru.oliverhd.homepetproject.databinding.FragmentRepositoryBinding
 import ru.oliverhd.homepetproject.repository.GitHubRepository
 
-class RepositoryFragment : MvpAppCompatFragment(), RepositoryView
-{
+private const val ARG_REPOSITORY = "repository"
+
+class RepositoryFragment : MvpAppCompatFragment(), RepositoryView {
+
+    private val gitHubRepository: GitHubRepository by lazy {
+        arguments?.getParcelable<GitHubRepository>(ARG_REPOSITORY) as GitHubRepository
+    }
 
     private val presenter by moxyPresenter {
         RepositoryPresenter(
+            gitHubRepository
         )
     }
 
@@ -47,6 +51,9 @@ class RepositoryFragment : MvpAppCompatFragment(), RepositoryView
     }
 
     companion object {
-        fun newInstance(): Fragment = RepositoryFragment()
+        fun newInstance(gitHubRepository: GitHubRepository): Fragment =
+            RepositoryFragment().apply {
+                arguments = bundleOf(ARG_REPOSITORY to gitHubRepository)
+            }
     }
 }

@@ -2,20 +2,17 @@ package ru.oliverhd.homepetproject.githubrepository
 
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import moxy.MvpPresenter
-import ru.oliverhd.homepetproject.RxRepo
+import ru.oliverhd.homepetproject.repository.GitHubRepository
 
 class RepositoryPresenter(
-) :
-    MvpPresenter<RepositoryView>() {
+    private val gitHubRepository: GitHubRepository
+    ) : MvpPresenter<RepositoryView>() {
 
     private val disposables = CompositeDisposable()
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        disposables.add(
-            RxRepo.getRxRepo()
-                .subscribe(viewState::showContent, viewState::error)
-        )
+        viewState.showContent(gitHubRepository)
     }
 
     override fun onDestroy() {

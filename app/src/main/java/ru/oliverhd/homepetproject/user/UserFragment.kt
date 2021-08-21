@@ -9,14 +9,18 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.github.terrakok.cicerone.Router
+import com.github.terrakok.cicerone.androidx.FragmentScreen
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.oliverhd.homepetproject.BackButtonListener
-import ru.oliverhd.homepetproject.app.App.Navigation.router
+import ru.oliverhd.homepetproject.app.App
 import ru.oliverhd.homepetproject.databinding.FragmentUserBinding
+import ru.oliverhd.homepetproject.di.UsersListScreenFragment
 import ru.oliverhd.homepetproject.repository.GitHubRepository
 import ru.oliverhd.homepetproject.repository.GithubUser
-import ru.oliverhd.homepetproject.repository.GithubUsersRepositoryFactory
+import ru.oliverhd.homepetproject.repository.GithubUsersRepository
+import javax.inject.Inject
 
 private const val ARG_USER_LOGIN = "userLogin"
 
@@ -27,12 +31,24 @@ class UserFragment : MvpAppCompatFragment(), UserView, BackButtonListener,
         arguments?.getString(ARG_USER_LOGIN).orEmpty()
     }
 
+    @Inject
+    lateinit var router: Router
+
+    @Inject
+    lateinit var githubUsersRepository: GithubUsersRepository
+
+    @UsersListScreenFragment
+    @Inject
+    lateinit var usersListScreen: FragmentScreen
+
+
     @Suppress("unused")
     private val presenter by moxyPresenter {
         UserPresenter(
             userLogin = userLogin,
-            usersRepository = GithubUsersRepositoryFactory.create(requireContext()),
-            router = router
+            usersRepository = githubUsersRepository,
+            router = router,
+            usersListScreen = usersListScreen
         )
     }
 
@@ -87,6 +103,7 @@ class UserFragment : MvpAppCompatFragment(), UserView, BackButtonListener,
         fun newInstance(userLogin: String): Fragment =
             UserFragment().apply {
                 arguments = bundleOf(ARG_USER_LOGIN to userLogin)
+                App.instance.applicationComponent.inject(this)
             }
     }
 }
