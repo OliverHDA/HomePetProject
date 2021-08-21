@@ -4,10 +4,12 @@ import android.os.Bundle
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
+import com.github.terrakok.cicerone.androidx.FragmentScreen
 import moxy.ktx.moxyPresenter
 import ru.oliverhd.homepetproject.BackButtonListener
 import ru.oliverhd.homepetproject.R
 import ru.oliverhd.homepetproject.databinding.ActivityMainBinding
+import ru.oliverhd.homepetproject.di.UsersListScreenFragment
 import javax.inject.Inject
 
 class MainActivity : AbsActivity(), MainView {
@@ -20,7 +22,12 @@ class MainActivity : AbsActivity(), MainView {
     @Inject
     lateinit var router: Router
 
-    private val presenter by moxyPresenter { MainPresenter(router) }
+    @UsersListScreenFragment
+    @Inject
+    lateinit var usersListScreen: FragmentScreen
+
+    private val presenter by moxyPresenter { MainPresenter(router, usersListScreen) }
+
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
 

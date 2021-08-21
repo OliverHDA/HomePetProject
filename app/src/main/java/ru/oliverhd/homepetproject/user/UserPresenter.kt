@@ -1,21 +1,21 @@
 package ru.oliverhd.homepetproject.user
 
 import com.github.terrakok.cicerone.Router
+import com.github.terrakok.cicerone.androidx.FragmentScreen
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.MvpPresenter
-import ru.oliverhd.homepetproject.RxRepo
 import ru.oliverhd.homepetproject.githubrepository.RepositoryScreen
 import ru.oliverhd.homepetproject.repository.GitHubRepository
 import ru.oliverhd.homepetproject.repository.GithubUser
 import ru.oliverhd.homepetproject.repository.GithubUsersRepository
-import ru.oliverhd.homepetproject.userslist.UsersListScreen
 
 class UserPresenter(
     private val userLogin: String,
     private val usersRepository: GithubUsersRepository,
-    private val router: Router
+    private val router: Router,
+    private val usersListScreen: FragmentScreen
 ) : MvpPresenter<UserView>() {
 
     private val disposables = CompositeDisposable()
@@ -49,13 +49,12 @@ class UserPresenter(
     }
 
     fun click(): Boolean {
-        router.backTo(UsersListScreen.create())
+        router.backTo(usersListScreen)
         return false
     }
 
     fun openRepository(gitHubRepository: GitHubRepository) {
-        router.navigateTo(RepositoryScreen().create())
-        RxRepo.setRepo(gitHubRepository)
+        router.navigateTo(RepositoryScreen().create(gitHubRepository))
     }
 
     override fun onDestroy() {

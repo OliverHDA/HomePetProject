@@ -7,14 +7,15 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.terrakok.cicerone.Router
+import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.oliverhd.homepetproject.BackButtonListener
+import ru.oliverhd.homepetproject.app.App
 import ru.oliverhd.homepetproject.databinding.FragmentUsersBinding
-import ru.oliverhd.homepetproject.main.AbsFragment
 import ru.oliverhd.homepetproject.repository.GithubUsersRepository
 import javax.inject.Inject
 
-class UsersListFragment : AbsFragment(), UsersListView, BackButtonListener {
+class UsersListFragment : MvpAppCompatFragment(), UsersListView, BackButtonListener {
 
     @Inject
     lateinit var router: Router
@@ -63,6 +64,8 @@ class UsersListFragment : AbsFragment(), UsersListView, BackButtonListener {
     override fun back() = presenter.backClick()
 
     companion object {
-        fun newInstance(): Fragment = UsersListFragment()
+        fun newInstance(): Fragment = UsersListFragment().apply {
+            App.instance.applicationComponent.inject(this)
+        }
     }
 }

@@ -1,14 +1,17 @@
 package ru.oliverhd.homepetproject.main
 
 import com.github.terrakok.cicerone.Router
+import com.github.terrakok.cicerone.androidx.FragmentScreen
 import moxy.MvpPresenter
-import ru.oliverhd.homepetproject.userslist.UsersListScreen
 
-class MainPresenter(private val router: Router) : MvpPresenter<MainView>() {
+class MainPresenter(
+    private val router: Router,
+    private val usersListScreen: FragmentScreen
+) : MvpPresenter<MainView>() {
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        router.replaceScreen(UsersListScreen.create())
+        router.replaceScreen(usersListScreen)
     }
 
     fun back() = router.exit()

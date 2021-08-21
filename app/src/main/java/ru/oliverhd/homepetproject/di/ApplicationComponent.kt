@@ -9,6 +9,8 @@ import dagger.android.AndroidInjectionModule
 import dagger.android.AndroidInjector
 import ru.oliverhd.homepetproject.app.App
 import ru.oliverhd.homepetproject.di.modules.*
+import ru.oliverhd.homepetproject.user.UserFragment
+import ru.oliverhd.homepetproject.userslist.UsersListFragment
 import javax.inject.Singleton
 
 @Singleton
@@ -18,10 +20,14 @@ import javax.inject.Singleton
         ContributesAndroidInjectorModule::class,
         GitHubUsersModule::class,
         GitHubApiModule::class,
-        GitHubStorageModule::class
+        GitHubStorageModule::class,
+        ScreenModule::class
     ]
 )
 interface ApplicationComponent : AndroidInjector<App> {
+
+    fun inject(usersListFragment: UsersListFragment)
+    fun inject(userFragment: UserFragment)
 
     @Component.Builder
     interface Builder {

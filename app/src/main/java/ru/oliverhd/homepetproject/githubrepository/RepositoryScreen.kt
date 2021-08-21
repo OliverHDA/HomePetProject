@@ -5,7 +5,7 @@ import ru.oliverhd.homepetproject.repository.GitHubRepository
 
 class RepositoryScreen() {
 
-    fun create() = FragmentScreen {
-        RepositoryFragment.newInstance()
+    fun create(gitHubRepository: GitHubRepository) = FragmentScreen {
+        RepositoryFragment.newInstance(gitHubRepository)
     }
 }

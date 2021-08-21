@@ -10,10 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.github.terrakok.cicerone.Router
+import com.github.terrakok.cicerone.androidx.FragmentScreen
+import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.oliverhd.homepetproject.BackButtonListener
+import ru.oliverhd.homepetproject.app.App
 import ru.oliverhd.homepetproject.databinding.FragmentUserBinding
-import ru.oliverhd.homepetproject.main.AbsFragment
+import ru.oliverhd.homepetproject.di.UsersListScreenFragment
 import ru.oliverhd.homepetproject.repository.GitHubRepository
 import ru.oliverhd.homepetproject.repository.GithubUser
 import ru.oliverhd.homepetproject.repository.GithubUsersRepository
@@ -21,7 +24,7 @@ import javax.inject.Inject
 
 private const val ARG_USER_LOGIN = "userLogin"
 
-class UserFragment : AbsFragment(), UserView, BackButtonListener,
+class UserFragment : MvpAppCompatFragment(), UserView, BackButtonListener,
     RepositoriesAdapter.Delegate {
 
     private val userLogin: String by lazy {
@@ -34,12 +37,18 @@ class UserFragment : AbsFragment(), UserView, BackButtonListener,
     @Inject
     lateinit var githubUsersRepository: GithubUsersRepository
 
+    @UsersListScreenFragment
+    @Inject
+    lateinit var usersListScreen: FragmentScreen
+
+
     @Suppress("unused")
     private val presenter by moxyPresenter {
         UserPresenter(
             userLogin = userLogin,
             usersRepository = githubUsersRepository,
-            router = router
+            router = router,
+            usersListScreen = usersListScreen
         )
     }
 
@@ -94,6 +103,7 @@ class UserFragment : AbsFragment(), UserView, BackButtonListener,
         fun newInstance(userLogin: String): Fragment =
             UserFragment().apply {
                 arguments = bundleOf(ARG_USER_LOGIN to userLogin)
+                App.instance.applicationComponent.inject(this)
             }
     }
 }
